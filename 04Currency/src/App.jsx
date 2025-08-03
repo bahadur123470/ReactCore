@@ -130,7 +130,7 @@ const App = () => {
         className={`
           fixed top-6 right-6 p-4 rounded-2xl transition-all duration-500 ease-out z-20
           ${darkMode 
-            ? 'bg-white-400/90 text-slate-900 hover:bg-amber-300 shadow-amber-400/20' 
+            ? 'bg-white/90 text-slate-900 hover:bg-amber-300 shadow-amber-400/20' 
             : 'bg-slate-800/90 text-white hover:bg-slate-700 shadow-slate-800/20'
           }
           hover:scale-110 shadow-xl backdrop-blur-sm glass-effect
@@ -259,7 +259,7 @@ const App = () => {
                 <span className="relative z-10">
                   {isConverting 
                     ? 'Processing Exchange...' 
-                    : `Convert ${from} to ${to}`
+                    : `Convert ${from.toUpperCase()} to ${to.toUpperCase()}`
                   }
                 </span>
               </button>
