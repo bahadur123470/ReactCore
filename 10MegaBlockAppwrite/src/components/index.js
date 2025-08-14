@@ -8,6 +8,10 @@ import Input from "./Input/Input";
 import PostCard from "./PostCard/PostCard";
 import Select from "./Select/Select";
 import Login from "./Login/Login";
+import Signup from "./Signup/Signup";
+import Protected from "./Layout/AuthLayout";
+import RTE from "./RTE/RTE";
+import PostForm from "./PostForm/PostForm";
 
 export {
     Header,
@@ -19,7 +23,11 @@ export {
     Input,
     PostCard,
     Select,
-    Login
+    Login,
+    Signup,
+    Protected,
+    PostForm,
+    RTE,
 
 
 }

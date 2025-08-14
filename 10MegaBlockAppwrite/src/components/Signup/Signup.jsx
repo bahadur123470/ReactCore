@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { data, Link, useNavigate } from 'react-router-dom'
+import {  Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import authService from '../../appwrite/auth'
 import { login } from '../../store/auth/authSlice'
