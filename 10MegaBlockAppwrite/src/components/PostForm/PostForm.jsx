@@ -19,31 +19,42 @@ function PostForm({post}) {
     const userData = useSelector(state => state.auth.userData)
 
     const submit = async (data) => {
-        if(post){
-            const file =  data.Image[0] ? service.uploadFile(data.image[0]) : null
-            if (file) {
-                service.deleteFile(post.featuredImage)
-            }
-            const dbPost = await service.updatePost(post.$id, {
-                ...data,
-                featuredImage: file ? file.$id : undefined,
-            })
-            if (dbPost){
-                navigate(`/post/${dbPost.$id}`)
-            }
-        } else {
-            const file = await service.uploadFile(data.image[0])
-            if (file) {
-                const fileId = file.$id
-                data.featuredImage = fileId
-                const dbPost = await service.createPost({
+        try {
+            if(post){
+                const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
+                if (file) {
+                    service.deleteFile(post.featuredImage)
+                }
+                const dbPost = await service.updatePost(post.$id, {
                     ...data,
-                    userid: userData.$id,
+                    featuredImage: file ? file.$id : undefined,
                 })
-                if (dbPost) {
+                if (dbPost){
                     navigate(`/post/${dbPost.$id}`)
                 }
+            } else {
+                if (!data.image || !data.image[0]) {
+                    alert('Please select an image')
+                    return
+                }
+                const file = await service.uploadFile(data.image[0])
+                if (file) {
+                    const fileId = file.$id
+                    data.featuredImage = fileId
+                    const dbPost = await service.createPost({
+                        ...data,
+                        userid: userData.$id,
+                    })
+                    if (dbPost) {
+                        navigate(`/post/${dbPost.$id}`)
+                    }
+                } else {
+                    alert('Failed to upload image')
+                }
             }
+        } catch (error) {
+            console.error('Error submitting post:', error)
+            alert('Failed to submit post: ' + error.message)
         }
     }
 
@@ -52,9 +63,10 @@ function PostForm({post}) {
             return value
             .trim()
             .toLowerCase()
-            .replace(/^[a-zA-Z\d\s]+/g,'-')
+            .replace(/[^a-zA-Z\d\s]+/g, '-')
+            .replace(/\s/g, '-')
 
-            return ''
+        return ''
     }, [])
 
     useEffect(() => {
@@ -100,7 +112,7 @@ function PostForm({post}) {
                 {post && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={service.getFilePreview(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />
