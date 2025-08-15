@@ -7,7 +7,7 @@ import service from '../../appwrite/configure'
 
 function PostForm({post}) {
 
-    const { register, handleSubmit, watch, setValue, control, getValue} = useForm({
+    const { register, handleSubmit, watch, setValue, control, getValues} = useForm({
         defaultValues: {
             title: post?.title || '',
             content:  post?.content || '',
@@ -16,7 +16,7 @@ function PostForm({post}) {
         }
     })
     const navigate = useNavigate()
-    const { userData } = useSelector(state => state.user.userData)
+    const userData = useSelector(state => state.auth.userData)
 
     const submit = async (data) => {
         if(post){
